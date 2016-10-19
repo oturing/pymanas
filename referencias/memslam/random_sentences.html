@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!--
+Random Sentences reimplementation
+copyright (c) 2016 Nick Montfort <nickm@nickm.com>
+based on a 1961 program by Victor H. Yngve
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+<style type="text/css">
+/* <![CDATA[ */
+body {
+ background:#000;
+ color:#ccc;
+ margin:0 0 0 18pt;
+ font-family:Optima, sans-serif;
+ font-size:16pt;
+}
+a {
+ color:#117;
+ text-decoration:none;
+}
+#main {
+ padding-top:18px;
+ width:70%;
+}
+#main div {
+ font-weight:bold;
+ padding-bottom:9px;
+}
+#info {
+ top:0;
+ right:0;
+ bottom:0;
+ position:absolute;
+ height:100%;
+ width:25%;
+ color:#333;
+ background:#999;
+ margin-left:6px;
+ border-left:thin #000 solid;
+ border-bottom:thin #000 solid;
+ padding:9px;
+ font-size:80%
+}
+/* ]]> */
+</style>
+<script type="text/javascript">
+
+var t = 0,
+
+// The Python version is cleaner; I added some characters so that splitting
+// parts of the grammar lines was easier. So, this one is not in true
+// Backus-Naur form.
+
+grammar = [
+'<sentence> ::= <short-sentence> | <long-sentence>',
+'<short-sentence> ::= <subject>/<verb-1>/" it" | <subject>/<verb-1>/<some-objects> | <subject>/<verb-2>/<some-adjectives>',
+'<long-sentence> ::= " when"/<short-sentence>/","/<short-sentence>',
+'<subject> ::= <proper-noun> | <subject-pronoun> | <singular> | <singular>/<preposition>/<singular>',
+'<proper-noun> ::= " Engineer Small" | " Small"',
+'<subject-pronoun> ::= " he" | " it"',
+'<singular> ::= <consonant-noun> | <an-the-adjs>/" engine"',
+'<consonant-noun> ::= <a-the-adjs>/<countable> | <-the-adjs>/<uncountable>',
+'<countable> ::= " train" | " bell" | " whistle" | " sand-dome" | " headlight" | " smokestack" | " wheel" | " firebox" | " boiler"',
+'<uncountable> ::= " water" | " steam"',
+'<plural> ::= <four-the-adjs>/<plural-noun>',
+'<adjective> ::= " little" | " black" | " shiny" | " oiled" | " polished" | " heated" | " big"',
+'<some-adjectives> ::= <adjective> | <adjective>/<maybe-adjectives>/" and"/<adjective>',
+'<a-an-adjective> ::= " a little" | " a black" | " a shiny" | " an oiled" | " a polished" | " a heated" | " a big"',
+'<singular-adjs> ::= <a-an-adjective>/<maybe-adjectives> | " the"/<adjective>/<maybe-adjectives> | <possessive>/<adjective>/<maybe-adjectives>',
+'<maybe-adjectives> ::= ","/<adjective>/<maybe-adjectives> | ""',
+'<a-the-adjs> ::= " a" | " the" | <possessive> | <singular-adjs>',
+'<an-the-adjs> ::= " an" | " the" | <possessive> | <singular-adjs>',
+'<-the-adjs> ::= " the" | <possessive> | <singular-adjs> | ""',
+'<verb-1> ::= " has" | " is" | " is proud of" | " makes"',
+'<verb-2> ::= " is" | " keeps"/<object> | " keeps it"',
+'<possessive> ::= " his" | " its"',
+'<four-the-adjs> ::= " the" | <possessive> | " four" | " the"/<some-adjectives> | <possessive>/<some-adjectives> | " four"/<some-adjectives>',
+'<plural-noun> ::= " trains" | " engines" | " bells" | " whistles" | " sand-domes" | " headlights" | " smokestacks" | " driving wheels" | " fireboxes" | " boilers"',
+'<preposition> ::= " under" | " in"',
+'<object> ::= <proper-noun> | <singular> | <plural> | <singular>/<preposition>/<singular>',
+'<maybe-objects> ::= ","/<object>/<maybe-objects> | ""',
+'<some-objects> ::= <object> | <object>/<maybe-objects>/" and"/<object> | <object>/<maybe-objects>/" and"/<object>'],
+rule = {};
+
+function rand_range(maximum) {
+    "use strict";
+    return Math.floor(Math.random() * (maximum + 1));
+}
+function choose(array) {
+    "use strict";
+    return array[rand_range(array.length - 1)];
+}
+function expand(token) {
+    "use strict";
+    if (token[0] == '"') {
+        return [token.slice(1,-1)]
+    }
+    else {
+        console.log(token);
+        var option = choose(rule[token]);
+        console.log('defined...');
+        console.log(option);
+        option = option.split('/');
+        console.log(option.length);
+        var result = [];
+        for (var i=0; i<option.length; i++) {
+            console.log(option[i] + '...' + option)
+            result += expand(option[i]);
+        }
+        return result;
+    }
+}
+function litany() {
+    "use strict";
+    var last, text, main = document.getElementById('main');
+    if (18 > t) {
+        t += 1;
+    } else {
+        main.removeChild(document.getElementById('main').firstChild);
+    }
+    last = document.createElement('div');
+    text = expand('<sentence>') + '.';
+    last.innerHTML = text.charAt(1).toUpperCase() + text.slice(2);
+    main.appendChild(last);
+}
+function produce_litany() {
+    "use strict";
+    litany();
+    setInterval(litany, 3000);
+}
+function initialize() {
+    console.log("HI!");
+    for (var i=0; i<grammar.length; i++) {
+        var sides = grammar[i].split(' ::= ');
+        rule[sides[0]] = sides[1].split(' | ');
+    }
+    for (var key in rule) {
+        console.log(key + '::' + rule[key]);
+    }
+    produce_litany();
+}
+
+</script>
+  <title>Random Sentences</title>
+</head>
+
+<body onload="initialize();">
+<div id="info">
+    <h2>Random Sentences</h2>
+    <h3>Victor H. Yngve</h3>
+    1961<br />
+    IBM 704<br />
+    COMIT<br />
+    <br />
+    Reimplemented by<br />
+    <a href="http://nickm.com">Nick Montfort</a><br />
+    for <a href="http://nickm.com/memslam/">Memory Slam</a><br />
+    Also: a <a href="random_sentences.py">Python 2</a> version<br />
+    Also: a <a href="randsent.bas">Commodore 64 BASIC</a> version <a href="randsent.prg">(available as a PRG)</a><br /><br />
+    Based on<br />
+    Yngve, Victor H. <a href="http://www.mt-archive.info/NPL-1961-Yngve.pdf">“Random Generation of English Sentences.”</a> International Conference on Machine Translation of Languages and Applied Language Analysis, National Physical Laboratory, Teddington, UK, September 5-8, 1961.<br />
+</a>
+</div>
+<div id="main"></div>
+</body>
+</html>

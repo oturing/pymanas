@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<!--
+Permutation Poems reimplementation
+copyright (c) 2014 Nick Montfort <nickm@nickm.com>
+based on a 1960s program by Brion Gysin & Ian Sommerville
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+<style type="text/css">
+/* <![CDATA[ */
+body {
+ background:#000;
+ color:#ccc;
+ margin:0 0 0 18pt;
+ font-family:Optima, sans-serif;
+ font-size:16pt;
+}
+a {
+ color:#117;
+ text-decoration:none;
+}
+#main {
+ padding-top:18px;
+ width:70%;
+}
+#main div {
+ font-weight:bold;
+ padding-bottom:9px;
+}
+#info {
+ top:0;
+ right:0;
+ bottom:0;
+ position:absolute;
+ height:100%;
+ width:25%;
+ color:#333;
+ background:#999;
+ margin-left:6px;
+ border-left:thin #000 solid;
+ border-bottom:thin #000 solid;
+ padding:9px;
+ font-size:80%
+}
+#r {
+font-size:400%;
+}
+/* ]]> */
+</style>
+<script type="text/javascript">
+var words = ['KICK', 'THAT', 'HABIT', 'MAN'];
+
+// Note that while the following function produces all permutations,
+// it does not produce them in the same order that Gysin & Sommerville
+// did! Feel free to improve it...
+function all_permutations(input) {
+    // Thanks to user delimited on StackOverflow
+    "use strict";
+    var result = [];
+    function permute(elements, data) {
+        var current, memo = data || [];
+        for (var i = 0; i < elements.length; i++) {
+            current = elements.splice(i, 1)[0];
+            if (elements.length === 0) {
+                result.push(memo.concat([current]));
+            }
+            permute(elements.slice(), memo.concat([current]));
+            elements.splice(i, 0, current);
+        }
+        return result;
+    }
+    return permute(input);
+}
+function display_permutations() {
+    "use strict";
+    var last, text = '', permutations, i, j, main = document.getElementById('main');
+    last = document.createElement('div');
+    permutations = all_permutations(words);
+    for (i in permutations) {
+        for (j in permutations[i]) {
+            text = text + permutations[i][j] + ' ';
+        }
+        text = text + '<br />';
+    }
+    last.innerHTML = text;
+    main.appendChild(last);
+}
+</script>
+  <title>Permutation Poems</title>
+</head>
+
+<body onload="display_permutations();">
+<div id="info">
+    <h2>Permutation Poems</h2>
+    <h3>Brion Gysin<br />
+    Ian Sommerville</h3>
+    1960s<br />
+    <!--- I do not know the exact year of the corresponding program.
+          The poem was written manually in 1959 and other permutation
+          poems were broadcast by the BBC in 1960. "Around 1960" is
+          sometimes given as a date. However the Honeywell Series 200
+          Model 120, indicated in several places as the computer used,
+          was not released until 1965. Please let me know if you
+          know that a different computer was used or know the exact
+          year in which the permutation poem programs were written.---> 
+    Honeywell Series 200 Model 120<br />
+    <br />
+    Reimplemented by<br />
+    <a href="http://nickm.com">Nick Montfort</a><br />
+    for <a href="http://nickm.com/memslam/">Memory Slam</a><br />
+    Also: a <a href="permutation_poems.py">Python 2</a> version<br />
+    <br />
+    This program is deterministic, and presents all permutations of
+    whatever words are listed at the top. To see it do something
+    different, view source, copy everything, open a text editor, paste
+    the HTML &amp; JavaScript that you copied into it, edit the “words”
+    list, and save the file. Then, open the file you saved in a
+    browser. You can use fewer or more words, too.
+</div>
+<div id="main"></div>
+</body>
+</html>

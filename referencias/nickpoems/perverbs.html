@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+   "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<!--
+Modern Perverbs, copyright (c) 2014 Nick Montfort <nickm@nickm.com>
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+-->
+<style type="text/css">
+/* <![CDATA[ */
+body {
+ background: #fff;
+ color: #000;
+ margin: 0 0 0 18pt;
+ font-family: Optima, sans-serif;
+ font-size: 13pt;
+}
+a {
+ color: #117;
+ text-decoration: none;
+}
+/* ]]> */
+</style>
+<script type="text/javascript">
+var t = 0;
+// All but the last character ends up as the beginning of the output.
+// The last character is tacked onto the very end.
+var left = ["It’s five o’clock.", "There’s a party —.", "All roads lead.", "Welcome!", "Keep your data.", "The road goes.", "The sun never sets.", "There’s no place like…", "Can one simply walk?", "No man is.", "Right or wrong,.", "Tell it.", "The Internet is."];
+// This ends up as the end of the output, except for the very last character.
+var right = ["somewhere", "in my pants", "to Rome", "to the jungle", "in the Cloud", "ever ever on", "on the British Empire", "home", "into Mordor", "an island", "my country", "to the hand", "a series of tubes"];
+function rand_range(max) {
+    "use strict";
+    return Math.floor(Math.random() * (max + 1));
+}
+function litany() {
+    "use strict";
+    var last, text, l, r, main = document.getElementById('main');
+    if (t <= 24) {
+        t += 1;
+    } else {
+        main.removeChild(document.getElementById('main').firstChild);
+    }
+    last = document.createElement('div');
+    l = rand_range(left.length - 1);
+    r = rand_range(right.length - 2);
+    if (r >= l) {
+        r += 1;
+    }
+    text = left[l].slice(0, left[l].length - 1) + " " + right[r] + left[l].slice(-1);
+    last.appendChild(document.createTextNode(text));
+    main.appendChild(last);
+}
+function produce_litany() {
+    "use strict";
+    litany();
+    setInterval(litany, 2500);
+}</script>
+  <title>Modern Perverbs</title>
+</head>
+<body onload="produce_litany();">
+<div style="float:right; background:#999; margin-left:6px; border-left:thin #000 solid; border-bottom:thin #000 solid; padding:9px">
+<div>Modern Perverbs<br><a href="http://nickm.com">Nick Montfort</a></div>
+</div>
+<div id="main" style="padding-top:18px;"></div>
+</body>
+</html>
+
+
