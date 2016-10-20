@@ -26,4 +26,4 @@ def permutations(elements):
 words = ['KICK', 'THAT', 'HABIT', 'MAN']
 
 for parts in list(permutations(words)):
-    print(' '.join(parts))
+    print ' '.join(parts)

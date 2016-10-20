@@ -42,9 +42,9 @@ def longer():
 def shorter():
     return (' ' + choice(adjectives) + ' ' + choice(nouns) + '.')
 
-print()
-print(choice(first) + ' ' + choice(second))
-print()
+print
+print choice(first) + ' ' + choice(second)
+print
 
 text = ''
 you_are = False
@@ -61,9 +61,9 @@ for i in range(0,5):
             text = text + ' YOU ARE MY' + shorter()
             you_are = True
 
-print(textwrap.fill(text, 80))
-print()
-print('                                        YOURS ' + choice(adverbs))
-print()
-print('                                        M.U.C.')
-print()
+print textwrap.fill(text, 80)
+print
+print '                                        YOURS ' + choice(adverbs)
+print
+print '                                        M.U.C.'
+print

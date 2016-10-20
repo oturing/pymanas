@@ -105,13 +105,10 @@ def expand(token):
         return result
 
 while True:
-    try:
-        count = count + 1
-        parts = expand('<sentence>')
-        while '' in parts:
-            parts.remove('')
-        sentence = ''.join(parts) + '.'
-        sentence = sentence[1].upper() + sentence[2:]
-        print(sentence)
-    except KeyboardInterrupt:
-        break
+    count = count + 1
+    parts = expand('<sentence>')
+    while '' in parts:
+        parts.remove('')
+    sentence = ''.join(parts) + '.'
+    sentence = sentence[1].upper() + sentence[2:]
+    print sentence

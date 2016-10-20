@@ -17,11 +17,11 @@
 
 from random import choice
 
-subjects = ['COUNT', 'STRANGER', 'LOOK', 'CHURCH', 'CASTLE', 'PICTURE',
-            'EYE', 'VILLAGE', 'TOWER', 'FARMER', 'WAY', 'GUEST', 'DAY',
+subjects = ['COUNT', 'STRANGER', 'LOOK', 'CHURCH', 'CASTLE', 'PICTURE', 
+            'EYE', 'VILLAGE', 'TOWER', 'FARMER', 'WAY', 'GUEST', 'DAY', 
             'HOUSE', 'TABLE', 'LABOURER']
-predicates = ['OPEN', 'SILENT', 'STRONG', 'GOOD', 'NARROW', 'NEAR',
-              'NEW', 'QUIET', 'FAR', 'DEEP', 'LATE', 'DARK', 'FREE',
+predicates = ['OPEN', 'SILENT', 'STRONG', 'GOOD', 'NARROW', 'NEAR', 
+              'NEW', 'QUIET', 'FAR', 'DEEP', 'LATE', 'DARK', 'FREE', 
               'LARGE', 'OLD', 'ANGRY']
 conjunctions = [' AND ', ' OR ', ' THEREFORE ', '. ', '. ', '. ', '. ', '. ']
 operators = ['A', 'EVERY', 'NO', 'NOT EVERY']
@@ -32,7 +32,7 @@ def phrase():
 		text = 'AN EYE'
 	return text + ' IS '
 
-print()
-print(phrase() + choice(predicates) + choice(conjunctions) +
-      phrase() + choice(predicates) + '.')
-print()
+print
+print (phrase() + choice(predicates) + choice(conjunctions) + 
+       phrase() + choice(predicates) + '.')
+print
